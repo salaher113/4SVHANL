@@ -1,0 +1,84 @@
+name: Generate Playlist Daily
+
+on:
+  schedule:
+    # Midnight Dubai time = 20:00 UTC (Dubai is UTC+4)
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+
+permissions:
+ contents: write
+
+jobs:
+  generate-playlist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # 6 hours max (GitHub limit)
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install requests
+      
+      - name: Generate playlist
+        run: |
+          python scripts/combine_playlists.py
+
+      - name: Summarize generated directives
+        run: |
+          python - <<'PY'
+          import re
+          from collections import Counter
+          from pathlib import Path
+
+          path = Path("assets/default_playlist.m3u8")
+          directives = Counter()
+          for raw_line in path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line.startswith("#"):
+              continue
+            match = re.match(r'^(#[^:,\s]+)', line)
+            if match:
+              directives[match.group(1)] += 1
+
+          interesting = [
+            "#EXTM3U",
+            "#EXTINF",
+            "#EXTVLCOPT",
+            "#KODIPROP",
+            "#EXT-X-APP",
+            "#EXT-X-APTV-TYPE",
+            "#EXT-X-SUB-URL",
+          ]
+          for name in interesting:
+            print(f"{name}: {directives.get(name, 0)}")
+          PY
+      
+      - name: Check if playlist was generated
+        id: check
+        run: |
+          if [ -f assets/default_playlist.m3u8 ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "size=$(wc -l < assets/default_playlist.m3u8)" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check.outputs.status == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/default_playlist.m3u8
+          git commit -m "🎬 Update playlist - $(date -u +'%Y-%m-%d %H:%M:%S') UTC" || echo "No changes to commit"
+          git push
+      
+      - name: Notify on failure
+        if: steps.check.outputs.status == 'failed'
+        run: echo "❌ Playlist generation failed"

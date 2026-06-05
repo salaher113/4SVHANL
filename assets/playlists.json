@@ -1,0 +1,168 @@
+[
+  {
+    "id": "joy-tv-combined",
+    "name": "Joy TV (Combined)",
+    "url": "https://raw.githubusercontent.com/salaher113/4SVHANL/main/assets/default_playlist.m3u8"
+  },
+  {
+    "id": "ott_navigator",
+    "name": "OTT navigator",
+    "url": "https://raw.githubusercontent.com/abusaeeidx/Toffee-playlist/refs/heads/main/ott_navigator.m3u"
+  },
+  {
+      "id": "tvlink-all",
+        "name": "TVLink (All Channels)",
+          "url": "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/all.m3u"
+      
+  },
+  {
+    "id": "doms9-base",
+    "name": "Doms9 Base",
+    "url": "https://raw.githubusercontent.com/doms9/iptv/refs/heads/default/M3U8/base.m3u8"
+  },
+  {
+    "id": "doms9-tv",
+    "name": "Doms9 TV",
+    "url": "https://raw.githubusercontent.com/doms9/iptv/refs/heads/default/M3U8/TV.m3u8"
+  },
+  {
+    "id": "doms9-events",
+    "name": "Doms9 Events",
+    "url": "https://raw.githubusercontent.com/doms9/iptv/refs/heads/default/M3U8/events.m3u8"
+  },
+  {
+    "id": "india-live-tv",
+    "name": "India Live TV",
+    "url": "https://raw.githubusercontent.com/bugsfreeweb/LiveTVCollector/2baf5e3667a04cbaa7df86ec99d0f82a80f1816d/LiveTV/India/LiveTV.m3u"
+  },
+  {
+    "id": "usa-live-tv",
+    "name": "USA Live TV",
+    "url": "https://raw.githubusercontent.com/bugsfreeweb/LiveTVCollector/2baf5e3667a04cbaa7df86ec99d0f82a80f1816d/LiveTV/USA/LiveTV.m3u"
+  },
+  {
+    "id": "siamcdn",
+    "name": "Siam CDN",
+    "url": "https://raw.githubusercontent.com/siam3310/cdn-tv/refs/heads/main/siamcdnplaylist.m3u"
+  },
+  {
+    "id": "siamcrichdmini",
+    "name": "Siam CricHDmini",
+    "url": "https://raw.githubusercontent.com/siam3310/crichdmini/refs/heads/main/siamscrichd.m3u"
+  },
+  {
+    "id": "iptv-org",
+    "name": "IPTV-org (Default)",
+    "url": "https://iptv-org.github.io/iptv/index.m3u"
+  },
+  {
+    "id": "abusaeeidx",
+    "name": "Abusaeeidx (Alt)",
+    "url": "https://raw.githubusercontent.com/abusaeeidx/IPTV-Scraper-Zilla/main/combined-playlist.m3u"
+  },
+  {
+    "id": "worldiptv",
+    "name": "World IPTV (Alt)",
+    "url": "https://raw.githubusercontent.com/OleksiiKramarenko/IPTV-playlist-form-WORLD-IPTV/refs/heads/main/playlist.m3u"
+  },
+  {
+    "id": "devforge",
+    "name": "DevForge (Alt)",
+    "url": "https://iptv.devforge.qzz.io/playlist/all.m3u"
+  },
+  {
+    "id": "localnow",
+    "name": "LocalNow (Alt)",
+    "url": "https://www.apsattv.com/localnow.m3u"
+  },
+  {
+    "id": "freelivesports",
+    "name": "FreeLiveSports (Alt)",
+    "url": "https://www.apsattv.com/freelivesports.m3u"
+  },
+  {
+    "id": "sujon",
+    "name": "Sujon (Alt)",
+    "url": "https://raw.githubusercontent.com/DrSujonPaul/Sujon/6dc6a1d4eaa20a9239ae27d8e0f00182b60eeb47/iptv"
+  },
+  {
+    "id": "backup",
+    "name": "Backup (Alt)",
+    "url": "https://raw.githubusercontent.com/BuddyChewChew/My-Streams/refs/heads/main/Backup.m3u"
+  },
+  {
+    "id": "plex",
+    "name": "Plex (Alt)",
+    "url": "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_all.m3u"
+  },
+  {
+    "id": "samsungtvplus",
+    "name": "Samsung TV Plus (Alt)",
+    "url": "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/samsungtvplus_all.m3u"
+  },
+  {
+    "id": "tubitv",
+    "name": "Tubi (Alt)",
+    "url": "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/tubi_all.m3u"
+  },
+  {
+    "id": "freetv",
+    "name": "Free TV (Alt)",
+    "url": "https://raw.githubusercontent.com/tenorioabsgit/IPTV/refs/heads/main/playlist.m3u"
+  },
+  {
+    "id": "ace",
+    "name": "Ace (Alt)",
+    "url": "https://raw.githubusercontent.com/dregs1/dregs1.github.io/f5422f13b8214f6373c0407f8651402cc6b937e1/xml/ace.m3u.xml"
+  },
+  {
+    "id": "desporto",
+    "name": "Desporto (Alt)",
+    "url": "https://raw.githubusercontent.com/dregs1/dregs1.github.io/f5422f13b8214f6373c0407f8651402cc6b937e1/xml/desporto.m3u"
+  },
+  {
+    "id": "free-tv-iptv-1",
+    "name": "Free-TV IPTV",
+    "url": "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8"
+  },
+  {
+    "id": "zbefine-iptv",
+    "name": "Zbefine IPTV",
+    "url": "https://raw.githubusercontent.com/zbefine/iptv/main/iptv.m3u"
+  },
+  {
+    "id": "vamoschuck-tv",
+    "name": "VamosChuck TV",
+    "url": "https://raw.githubusercontent.com/vamoschuck/TV/main/M3U"
+  },
+  {
+    "id": "yuechan-live",
+    "name": "YueChan Live IPTV",
+    "url": "https://testingcf.jsdelivr.net/gh/YueChan/Live@main/IPTV.m3u"
+  },
+  {
+    "id": "kimentanm-aptv",
+    "name": "Kimentanm APTV",
+    "url": "https://raw.githubusercontent.com/Kimentanm/aptv/master/m3u/iptv.m3u"
+  },
+  {
+    "id": "yang-gather",
+    "name": "YanG Gather IPTV",
+    "url": "https://raw.githubusercontent.com/YanG-1989/m3u/main/Gather.m3u"
+  },
+  {
+    "id": "bigbiggrandg",
+    "name": "BigBigGrandG IPTV",
+    "url": "https://raw.githubusercontent.com/BigBigGrandG/IPTV-URL/release/Gather.m3u"
+  },
+  {
+    "id": "fanmingming-ipv6",
+    "name": "Fanmingming IPTV IPv6",
+    "url": "https://raw.githubusercontent.com/fanmingming/live/main/tv/m3u/ipv6.m3u"
+  },
+  {
+    "id": "cricHd-playlists-Auto-Update-permanent",
+    "name": "CricHd Playlists Auto Update permanent",
+    "url": "https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/refs/heads/main/ALL.m3u"
+  }
+]

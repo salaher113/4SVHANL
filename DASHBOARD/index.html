@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Dashboard — Admin Login</title>
+  <style> body { background: #13141f; margin: 0; } </style>
+  <link rel="stylesheet" href="style.css?v=9">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-box">
+      <div class="logo-wrap" style="justify-content:center; padding:0; margin-bottom:20px;">
+        <div class="logo-icon"></div>
+        <div>CRM Dashboard</div>
+      </div>
+      
+      <div class="login-title">Secure Portal</div>
+      <div class="login-subtitle">Authenticate with your admin credentials</div>
+
+      <form onsubmit="return false;">
+        <div class="input-grp">
+          <label class="input-label">Username</label>
+          <input type="text" id="emailInput" class="input-box input-with-icon" placeholder="username" style="padding-right: 140px;" autocomplete="off">
+          <span class="suffix">@gopremium.com</span>
+        </div>
+
+        <div class="input-grp">
+          <label class="input-label">Password</label>
+          <input type="password" id="passInput" class="input-box" placeholder="••••••••" style="padding-right: 40px;" autocomplete="off">
+          <span id="togglePass" style="position:absolute; right:16px; top:35px; cursor:pointer; color:var(--text-muted); display:flex; align-items:center;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+          </span>
+        </div>
+
+        <button type="button" class="btn-solid" id="loginBtn" onclick="doLogin()" style="width:100%; margin-top:10px; padding:14px;">Sign In</button>
+        <div class="alert-error" id="loginError">Error message</div>
+      </form>
+    </div>
+  </div>
+
+  <script src="auth_main.js"></script>
+</body>
+</html>

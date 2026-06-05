@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Dashboard — Admin</title>
+  <link rel="stylesheet" href="style.css?v=9">
+  <!-- Chart.js for all the glowing line/bar/donut charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<div class="app-layout" id="app">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo-icon"></div>
+      <div>CRM Dashboard</div>
+    </div>
+
+    <!-- Group 1 -->
+    <div class="nav-group">
+      <div class="nav-title">OVERVIEW</div>
+      <a class="nav-link active" data-page="overview" href="#">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="nav-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+        Dashboard
+      </a>
+      <a class="nav-link" data-page="reports" href="#">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="nav-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+        Reports
+        <div class="nav-badge" id="sidebar-report-badge" style="display:none;">0</div>
+      </a>
+    </div>
+
+    <!-- Group 2 -->
+    <div class="nav-group">
+      <div class="nav-title">MANAGEMENT</div>
+      <a class="nav-link" data-page="users" href="#">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="nav-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+        Users List
+      </a>
+      <a class="nav-link" data-page="create-user" href="#">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="nav-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" /></svg>
+        Provision User
+      </a>
+    </div>
+
+    <!-- Group 3 -->
+    <div class="nav-group">
+      <div class="nav-title">SYSTEM</div>
+      <a class="nav-link" data-page="admins" href="#" id="menuAdminMgmt" style="display:none; color:var(--neon-pink);">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="nav-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+        Admin Portal
+      </a>
+      <a class="nav-link" href="#" onclick="logout(); return false;">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="nav-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>
+        Logout
+      </a>
+    </div>
+
+    <div class="dl-btn-box">
+      <button class="dl-btn">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="btn-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+        Download CSV
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="page-title" id="pageTitle">Overview</div>
+      <div class="tp-user">
+        <div class="tp-details" style="text-align:right;">
+          <span class="tp-name" id="tp-name-text">Admin</span>
+          <span class="tp-role" id="tp-role-text">Manager</span>
+        </div>
+        <div class="tp-avatar" id="tp-avatar-text" style="color:#13141f;">A</div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW: OVERVIEW (CRM Grid) ================= -->
+    <div class="view-section active" id="page-overview">
+      <div class="dashboard-grid">
+
+        <!-- Grid Top: 4 Columns -->
+        <!-- Neon Purple Card -->
+        <div class="card neon-card purple grid-top-1">
+          <div class="neon-title">Total Registered Users</div>
+          <div class="neon-val" id="statTotalUsers">0 <sub>users</sub></div>
+        </div>
+
+        <!-- Neon Cyan Card -->
+        <div class="card neon-card cyan grid-top-2">
+          <div class="neon-title">New Users Today</div>
+          <div class="neon-val" id="statNewToday">0 <sub>today</sub></div>
+        </div>
+
+        <!-- Two small stats blocks -->
+        <div class="grid-top-3">
+          <div class="inner-stat">
+            <div class="stat-meta">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="stat-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+              <span>Active Today</span>
+            </div>
+            <span class="inner-pill" id="statActiveToday" style="color:var(--neon-cyan)">0</span>
+          </div>
+          <div class="inner-stat">
+            <div class="stat-meta">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="stat-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>Total Watch Time</span>
+            </div>
+            <span class="inner-pill" id="statWatchTime">0h</span>
+          </div>
+        </div>
+
+        <!-- Area Chart: Top Right -->
+        <div class="card grid-top-4" style="padding:20px;">
+          <div class="card-title">Watch Time Trend</div>
+          <div class="chart-container" style="height:100px; margin-top:20px;">
+            <canvas id="chartAreaMini"></canvas>
+          </div>
+        </div>
+
+        <!-- Center Line Chart -->
+        <div class="card grid-main-chart">
+          <div class="card-header" style="margin-bottom:10px;">
+            <div class="card-title">Registrations vs App Engagement</div>
+            <div class="card-action">
+              <span style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:2px;background:var(--neon-purple);"></div> Registrations</span>
+              <span style="display:flex;align-items:center;gap:5px;margin-left:10px;"><div style="width:10px;height:2px;background:var(--neon-cyan);"></div> Watch Time</span>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartMainLine"></canvas>
+          </div>
+        </div>
+
+        <!-- Donut 1 -->
+        <div class="card grid-bot-1">
+          <div class="card-header"><div class="card-title">Users by Role</div></div>
+          <div class="donut-wrap">
+            <div class="donut-circle d-blue">
+              <div class="donut-inner">
+                <div class="d-val" id="statRolePct">0%</div>
+                <div class="d-lbl" id="statRoleLbl">Admin</div>
+              </div>
+            </div>
+            <div class="donut-legend">
+              <div class="l-item"><div class="l-dot cyan"></div> <span id="lblRoleAdmin">Admin (0)</span></div>
+              <div class="l-item"><div class="l-dot empty"></div> <span id="lblRoleUser">User (0)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Donut 2 -->
+        <div class="card grid-bot-2">
+          <div class="card-header"><div class="card-title">Account Status</div></div>
+          <div class="donut-wrap">
+            <div class="donut-circle d-purple" style="width:100px;height:100px; box-shadow: inset 0 0 0 15px var(--bg-card);">
+              <div class="donut-inner" style="width:70px;height:70px;">
+                <div class="d-val" id="statBanPct" style="font-size:16px;">0%</div>
+                <div class="d-lbl" style="font-size:8px;">Banned</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Active Users -->
+        <div class="card grid-bot-3">
+          <div class="card-header"><div class="card-title">Top Active Users</div></div>
+          <div class="chart-container" style="min-height:100px; max-height:160px; overflow-y:auto;">
+            <table style="width:100%; text-align:left; font-size:12px; margin-top:10px;">
+              <tbody id="topActiveUsersBody">
+                <tr><td style="color:var(--text-muted); text-align:center;">Syncing...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= VIEW: USERS LIST ================= -->
+    <div class="view-section" id="page-users">
+      <div class="table-card">
+        <div class="card-header">
+          <div class="card-title">User Management</div>
+          <input type="text" id="userSearch" class="input-box" style="width:250px; padding:10px 14px;" placeholder="Search users by name or email..." oninput="filterUsers(this.value)">
+        </div>
+        <table>
+          <thead><tr><th>User</th><th>Email / Role</th><th>Joined</th><th>Time Left</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="usersTableBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Loading users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= VIEW: CREATE USER ================= -->
+    <div class="view-section" id="page-create-user">
+      <div class="table-card" style="max-width: 600px; margin: 0 auto; padding: 32px;">
+        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="card-title" style="font-size:16px;">Provision Secure User Account</div>
+          <div id="adminPointsDisplay" style="font-size:13px; font-weight:600; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:6px 12px; border-radius:12px; border:1px solid var(--border-color);">Points Balance: <span style="color:var(--neon-cyan)">Syncing...</span></div>
+        </div>
+        
+        <form onsubmit="return false">
+          <div class="input-grp">
+            <label class="input-label">System Alias (Username)</label>
+            <input type="text" id="cuUsername" class="input-box" placeholder="e.g. jsmith" oninput="updateEmailPreview(this.value)" autocomplete="off">
+            <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">Identity Hash: <strong id="emailPreviewText" style="color:var(--accent-primary);">USERNAME@GOPREMIUM.COM</strong></div>
+          </div>
+
+          <div class="input-grp">
+            <label class="input-label">Authentication Token (Password)</label>
+            <input type="password" id="cuPassword" class="input-box" placeholder="Enter secure passphrase" autocomplete="off">
+          </div>
+
+          <div class="input-grp" style="margin-top:30px;">
+            <label class="input-label">Account TTL Expiration (Time to Live)</label>
+            <div style="display:flex; gap:12px;">
+              <div style="flex:1; text-align:center;">
+                <input type="number" id="durYears" class="input-box" min="0" value="0" style="text-align:center; padding-left:4px; padding-right:4px;" oninput="calcExpiry()">
+                <span style="font-size:10px; color:var(--text-muted); display:block; margin-top:6px; font-weight:500;">Years / سنة</span>
+              </div>
+              <div style="flex:1; text-align:center;">
+                <input type="number" id="durMonths" class="input-box" min="0" value="0" style="text-align:center; padding-left:4px; padding-right:4px;" oninput="calcExpiry()">
+                <span style="font-size:10px; color:var(--text-muted); display:block; margin-top:6px; font-weight:500;">Months / شهر</span>
+              </div>
+              <div style="flex:1; text-align:center;">
+                <input type="number" id="durDays" class="input-box" min="0" value="0" style="text-align:center; padding-left:4px; padding-right:4px;" oninput="calcExpiry()">
+                <span style="font-size:10px; color:var(--text-muted); display:block; margin-top:6px; font-weight:500;">Days / يوم</span>
+              </div>
+              <div style="flex:1; text-align:center;">
+                <input type="number" id="durHours" class="input-box" min="0" value="0" style="text-align:center; padding-left:4px; padding-right:4px;" oninput="calcExpiry()">
+                <span style="font-size:10px; color:var(--text-muted); display:block; margin-top:6px; font-weight:500;">Hours / ساعة</span>
+              </div>
+              <div style="flex:1; text-align:center;">
+                <input type="number" id="durMins" class="input-box" min="0" value="0" style="text-align:center; padding-left:4px; padding-right:4px;" oninput="calcExpiry()">
+                <span style="font-size:10px; color:var(--text-muted); display:block; margin-top:6px; font-weight:500;">Mins / دقيقة</span>
+              </div>
+              <div style="flex:1; text-align:center;">
+                <input type="number" id="durSecs" class="input-box" min="0" value="0" style="text-align:center; padding-left:4px; padding-right:4px;" oninput="calcExpiry()">
+                <span style="font-size:10px; color:var(--text-muted); display:block; margin-top:6px; font-weight:500;">Secs / ثانية</span>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:16px;background:rgba(255,255,255,0.02);padding:10px;border-radius:6px;border:1px solid var(--border-color);">
+              Expiration Target (الانتهاء المتوقع): <strong id="expiryPreview" style="color:var(--text-primary);letter-spacing:0.5px;">Permanent Access</strong>
+            </div>
+          </div>
+
+          <div style="margin-top: 40px; display:flex; justify-content:flex-end;">
+            <button type="button" class="btn-solid" id="createUserBtn" onclick="createUser()">Deploy Profile</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= VIEW: REPORTS ================= -->
+    <div class="view-section" id="page-reports">
+      <div class="table-card">
+        <div class="card-header">
+          <div class="card-title">User Reports & Feedback</div>
+          <select id="reportFilter" class="input-box" style="width:200px; padding:10px;" onchange="loadReports()">
+            <option value="">View All Scopes</option>
+            <option value="pending">Critical Pending Only</option>
+            <option value="resolved">Archived (Resolved)</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Reporter</th><th>Topic Scope</th><th>Content Extract</th><th>Timeline</th><th>Status</th><th>Override/Action</th></tr></thead>
+          <tbody id="reportsTableBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Syncing reports...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= VIEW: ADMIN MANAGEMENT ================= -->
+    <div class="view-section" id="page-admins">
+      
+      <!-- Panel 1: Provision Admin -->
+      <div class="table-card" style="margin-bottom:20px;">
+        <div class="card-header"><div class="card-title" style="color:var(--neon-pink);">Provision Sub-Admin</div></div>
+        <div style="display:flex; gap:15px; align-items:flex-end; padding:0 10px 10px; flex-wrap:wrap;">
+          <div class="input-grp" style="flex:1; min-width:200px;"><label class="input-label">Username</label><input type="text" id="caName" class="input-box" placeholder="e.g. manager1"></div>
+          <div class="input-grp" style="flex:1; min-width:200px;"><label class="input-label">Password</label><input type="password" id="caPass" class="input-box" placeholder="Secure token"></div>
+          <div class="input-grp" style="width:120px;"><label class="input-label">Init Points</label><input type="number" id="caPoints" class="input-box" value="10" min="0"></div>
+          
+          <div style="width:100%; display:flex; gap:20px; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+            <span style="color:var(--text-muted); font-size:12px; margin-right:10px;">Permissions:</span>
+            <label style="color:white; font-size:13px; display:flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="permViewUsers" checked style="accent-color:var(--neon-cyan);"> View Users</label>
+            <label style="color:white; font-size:13px; display:flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="permViewReports" checked style="accent-color:var(--neon-cyan);"> View Reports</label>
+            <label style="color:white; font-size:13px; display:flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="permCreateUsers" checked style="accent-color:var(--neon-cyan);"> Create Users</label>
+            <label style="color:white; font-size:13px; display:flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="permEditBan" checked style="accent-color:var(--neon-cyan);"> Edit/Ban</label>
+          </div>
+
+          <button class="btn-solid" style="background:var(--neon-pink);box-shadow:0 0 15px rgba(255,51,153,0.4); margin-top:10px;" onclick="createAdminAccount()">Create Admin</button>
+        </div>
+      </div>
+
+      <!-- Panel 2: Admins List -->
+      <div class="table-card" style="margin-bottom:20px;">
+        <div class="card-header"><div class="card-title">Authorized Administrators</div></div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>Admin Name</th><th>Email</th><th>Role</th><th>Points Allocation</th><th>Actions</th></tr></thead>
+            <tbody id="adminsTableBody">
+              <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted);">Syncing admins...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Panel 3: Global Action Logs -->
+      <div class="table-card">
+        <div class="card-header">
+          <div class="card-title">System Execution Logs</div>
+          <div style="display:flex;gap:10px;">
+            <select id="logActionFilter" class="input-box" style="width:160px; padding:8px;" onchange="loadLogs()">
+              <option value="">All Actions</option>
+              <option value="Created user">Created user</option>
+              <option value="Deleted user">Deleted user</option>
+              <option value="Banned user">Banned user</option>
+              <option value="Unbanned user">Unbanned user</option>
+              <option value="Edited user">Edited user</option>
+              <option value="Replied to report">Replied to report</option>
+            </select>
+            <input type="text" id="logSearch" class="input-box" style="width:200px; padding:8px;" placeholder="Search Admin or Target..." oninput="filterLogs(this.value)">
+          </div>
+        </div>
+        <div style="max-height:400px; overflow-y:auto;">
+          <table style="position:relative;">
+            <thead style="position:sticky; top:0; background:var(--bg-card); z-index:1;">
+              <tr><th>Timestamp</th><th>Admin Identity</th><th>Executed Action</th><th>Target Subject</th></tr>
+            </thead>
+            <tbody id="logsTableBody">
+              <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted);">Loading system logs...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Admin Points Modal -->
+<div class="modal-overlay" id="pointsModal">
+  <div class="modal-box">
+    <div class="card-header">
+      <div class="card-title" style="color:var(--neon-cyan);">Modify Allocation Points</div>
+      <button class="act-btn" onclick="closePointsModal()">✕</button>
+    </div>
+    <div style="color:white; margin-bottom:15px; font-size: 14px;">Target: <strong id="ptAdminName" style="color:var(--neon-pink)">...</strong></div>
+    <div class="input-grp">
+      <label class="input-label">Points to Assign (Use negative to subtract)</label>
+      <input type="number" id="ptDelta" class="input-box" value="0">
+    </div>
+    <div class="modal-actions" style="margin-top:20px;">
+      <button class="act-btn" onclick="closePointsModal()">Abort</button>
+      <button class="btn-solid" onclick="confirmPointsUpdate()">Execute Modification</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <div class="card-header">
+      <div class="card-title" style="color:var(--neon-cyan);">Edit User Protocol</div>
+      <button class="act-btn" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="input-grp">
+      <label class="input-label">Username</label>
+      <input type="text" id="editUsername" class="input-box" placeholder="e.g. jsmith">
+    </div>
+    <div class="input-grp" style="margin-top:10px;">
+      <label class="input-label">Avatar URL (Optional)</label>
+      <input type="text" id="editAvatarUrl" class="input-box" placeholder="https://...">
+    </div>
+    <div class="modal-actions" style="margin-top:20px;">
+      <button class="act-btn" onclick="closeEditModal()">Abort</button>
+      <button class="btn-solid" style="background:var(--neon-cyan);box-shadow:0 0 15px rgba(6,182,212,0.4);color:#0f172a;" onclick="confirmEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ban Modal -->
+<div class="modal-overlay" id="banModal">
+  <div class="modal-box">
+    <div class="card-header">
+      <div class="card-title" id="banModalTitle" style="color:var(--neon-pink);">Execute Ban Protocol</div>
+      <button class="act-btn" onclick="closeBanModal()">✕</button>
+    </div>
+    <div class="input-grp">
+      <label class="input-label">Reason Context</label>
+      <textarea id="banReason" class="input-box" placeholder="Administrative reason for ban..." style="height:90px;"></textarea>
+    </div>
+    <div class="input-grp">
+      <label class="input-label">Penalty Duration (0 = Indefinite)</label>
+      <div style="display:flex;gap:12px;">
+        <input type="number" id="banDays" class="input-box" min="0" value="0" placeholder="DD" style="text-align:center;">
+        <input type="number" id="banHours" class="input-box" min="0" value="0" placeholder="HH" style="text-align:center;">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="act-btn" onclick="closeBanModal()">Abort</button>
+      <button class="btn-solid" style="background:var(--neon-pink);box-shadow:0 0 15px rgba(255,51,153,0.4);" onclick="confirmBan()">Execute Sequence</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reply Modal -->
+<div class="modal-overlay" id="replyModal">
+  <div class="modal-box">
+    <div class="card-header">
+      <div class="card-title">System Reply</div>
+      <button class="act-btn" onclick="closeReplyModal()">✕</button>
+    </div>
+    <div id="reportContext" class="report-context-box"></div>
+    
+    <div class="input-grp">
+      <label class="input-label">System Transmission Payload</label>
+      <textarea id="replyText" class="input-box" placeholder="Type message to transmit directly to user's device inbox..." style="height:120px;"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="act-btn" onclick="closeReplyModal()">Dismiss</button>
+      <button class="btn-solid" onclick="sendReply()">Transmit Payload</button>
+    </div>
+  </div>
+</div>
+
+<script src="dashboard_main.js"></script>
+</body>
+</html>
